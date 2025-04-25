@@ -1,0 +1,26 @@
+[
+  {
+    "Id": 1,
+    "Title": "vdk 8051",
+    "Author": "nguyen tang cuong",
+    "IsAvailable": false
+  },
+  {
+    "Id": 2,
+    "Title": "power electronics",
+    "Author": "david penault",
+    "IsAvailable": false
+  },
+  {
+    "Id": 3,
+    "Title": "signal and system",
+    "Author": "alan. j. openheimm",
+    "IsAvailable": true
+  },
+  {
+    "Id": 4,
+    "Title": "electronic principles",
+    "Author": "j. bate",
+    "IsAvailable": true
+  }
+]
