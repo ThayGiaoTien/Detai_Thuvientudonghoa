@@ -51,9 +51,10 @@ public class Library
 {
     private List<Book> books = new();
     private List<User> users = new();
-    private List<HistoryRecord> HistoryRecords = new();
+    private List<HistoryRecord> historyRecords = new();
     private int nextBookId = 1;
     private int nextUserId = 1;
+    private const string FilePath = "C:\\Users\\thela\\OneDrive\\Desktop\\library.json";
 
 
     // Book operators ================
@@ -83,7 +84,7 @@ public class Library
             return false;
         book.Borrow();
         // When borrowing a book, we need to log the action
-        HistoryRecords.Add(new HistoryRecord(book.Id, user.Id, HistoryAction.Borrow));  
+        historyRecords.Add(new HistoryRecord(book.Id, user.Id, HistoryAction.Borrow));  
         return true;
 
     }
@@ -95,12 +96,68 @@ public class Library
             return false;
         book.Return();
         // When returning a book, we need to log the action
-        HistoryRecords.Add(new HistoryRecord(book.Id, user.Id, HistoryAction.Return));
+        historyRecords.Add(new HistoryRecord(book.Id, user.Id, HistoryAction.Return));
         return true;
     }
 
     // History Logging ==================
-    public IEnumerable<HistoryRecord> GetHistoryRecords() => HistoryRecords;
+    public IEnumerable<HistoryRecord> GetHistoryRecords() => historyRecords;
+
+
+    // File Handling ==========================
+    public void SaveToFile()
+    {
+        var data = new LibraryData
+        {
+            listBooks = books,
+            listUsers = users,
+            listHistoryRecords = historyRecords
+        };
+        var option = new JsonSerializerOptions { WriteIndented = true };
+        File.WriteAllText(FilePath, JsonSerializer.Serialize(data, option));
+        Console.WriteLine("Saved data to backup file successfully!");
+    }
+
+    public void LoadFromFile()
+    {
+        if (!File.Exists(FilePath))
+        {
+            Console.WriteLine("The specified file path is not exist!");
+            return;
+        }
+        var jsonData= File.ReadAllText(FilePath);
+
+        if (string.IsNullOrEmpty(jsonData))
+        {
+            Console.WriteLine("Empty File!");
+            return;
+        }
+
+        try
+        {
+            var data = JsonSerializer.Deserialize<LibraryData>(jsonData);
+
+            if (data == null)
+            {
+                Console.WriteLine("Failed to load data from file.");
+                return;
+            }
+            Console.WriteLine("Loaded data from backup file succesfully!");
+            books = data.listBooks ?? new List<Book>();
+            users = data.listUsers ?? new List<User>();
+            historyRecords = data.listHistoryRecords ?? new List<HistoryRecord>();
+
+
+            // Restore ID counters to avoid duplicates: 
+            nextBookId = books.Any() ? books.Max(b => b.Id) + 1 : 1;
+            nextUserId = users.Any() ? users.Max(u => u.Id) + 1 : 1;
+        }
+        catch
+        {
+            Console.WriteLine("Failed to load data from file. Invalid JSON format.");
+        }
+
+    }
 }
 
 public class LibraryDataHandler
@@ -142,38 +199,53 @@ public class HistoryRecord
     public int UserId { get; }
     public HistoryAction Action { get; }
     public DateTime Timestamp { get; }
-    public HistoryRecord(int bookId, int user_id, HistoryAction action)
+
+    
+    public HistoryRecord(int bookId, int userId, HistoryAction action)
     {
         BookId = bookId;
         Action = action;
-        UserId = user_id;
+        UserId = userId;
         Timestamp = DateTime.Now;
+    }
+
+    [JsonConstructor]
+    public HistoryRecord(int bookId, int userId, HistoryAction action, DateTime timestamp)
+    {
+        BookId = bookId;
+        Action = action;
+        UserId = userId;
+        Timestamp = timestamp;
     }
 
     public override string ToString()
     {
-        return $"{Timestamp: G}: User {UserId}" +
-                $"{(Action == HistoryAction.Borrow? "borrowed" :"returned")} Book {BookId}"    ;
+        return $"{Timestamp}: User {UserId}" +
+                $"{(Action == HistoryAction.Borrow? " borrowed" :" returned")} Book {BookId}"    ;
     }
 }
 
-
+public class LibraryData
+{
+    public List<Book> listBooks { get; set; } = new();
+    public List<HistoryRecord> listHistoryRecords { get; set; } = new();
+    public List<User> listUsers { get; set; } = new();
+}
 
 // --- MAIN PROGRAM ---
 
 public static class Program
 {
     static Library library = new();
-    static LibraryDataHandler dataHandler = new LibraryDataHandler();
+    //static LibraryDataHandler dataHandler = new LibraryDataHandler();
 
 
     static void Main()
     {
-        var books = dataHandler.LoadData();
-        foreach (var book in books)
-        {
-            library.AddBook(book.Title, book.Author, book.IsAvailable);
-        }
+       // Load all data from backup file: 
+        library.LoadFromFile();
+
+        
         while (true)
         {
             Console.Clear();
@@ -185,7 +257,8 @@ public static class Program
             Console.WriteLine("5. Borrow Book");
             Console.WriteLine("6. Return Book");
             Console.WriteLine("7. View History Records");
-            Console.WriteLine("8. Exit");
+            Console.WriteLine("8. Save");
+            Console.WriteLine("9. Exit");
             Console.Write("Select an option: ");
 
             switch (Console.ReadLine())
@@ -212,7 +285,10 @@ public static class Program
                     ShowHisoryRecords();
                     break;
                 case "8":
-                    dataHandler.SaveData(library.GetAllBooks());
+                    library.SaveToFile();
+                    break;
+                case "9":
+                    // Do nothing
                     return;
                 default:
                     Console.WriteLine("Invalid option. Try again.");
@@ -223,9 +299,22 @@ public static class Program
     static void AddBook()
     {
         Console.Write("Enter book title: ");
-        string title = Console.ReadLine();
+        string ?title = Console.ReadLine();
+        if(string.IsNullOrEmpty(title))
+        {
+            Console.WriteLine("Invalid book title.");
+            return;
+        }
         Console.Write("Enter book author: ");
-        string author = Console.ReadLine();
+        string ?author = Console.ReadLine();
+        if(string.IsNullOrEmpty(author))
+        {
+            Console.WriteLine("Invalid book author.");
+            return;
+        }
+        // Add book to library
+        // library.AddBook(title, author, true);
+        // Add book to library with available status
         library.AddBook(title, author, true);
         Console.WriteLine("Book added successfully.");
         Console.ReadKey();
@@ -242,7 +331,7 @@ public static class Program
     static void BorrowBook()
     {
         Console.Write("Enter user's ID: ");
-        if (!int.TryParse(Console.ReadLine(), out int userId))
+        if (int.TryParse(Console.ReadLine(), out int userId))
         {
             Console.Write("Enter book ID to borrow: ");
             if (int.TryParse(Console.ReadLine(), out int bookId))
@@ -266,7 +355,7 @@ public static class Program
     static void ReturnBook()
     {
         Console.Write("Enter user's ID: ");
-        if (!int.TryParse(Console.ReadLine(), out int userId))
+        if (int.TryParse(Console.ReadLine(), out int userId))
         {
             Console.Write("Enter book ID to borrow: ");
             if (int.TryParse(Console.ReadLine(), out int bookId))
@@ -309,7 +398,12 @@ public static class Program
     static void AddUser()
     {
         Console.Write("Enter user name: ");
-        string name = Console.ReadLine();
+        string ?name = Console.ReadLine();
+        if(string.IsNullOrEmpty(name))
+        {
+            Console.WriteLine("Invalid user name.");
+            return;
+        }
         library.AddUser(name);
         Console.WriteLine("User added successfully.");
         Console.ReadKey();
