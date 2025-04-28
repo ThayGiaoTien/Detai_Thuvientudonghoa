@@ -1,0 +1,30 @@
+[
+  {
+    "RecordId": 1,
+    "UserId": 1,
+    "BookId": 2,
+    "BorrowDate": "2025-04-28T04:18:58.8954851+07:00",
+    "ReturnDate": "2025-04-28T04:21:41.134876+07:00"
+  },
+  {
+    "RecordId": 2,
+    "UserId": 1,
+    "BookId": 1,
+    "BorrowDate": "2025-04-28T04:19:02.2467685+07:00",
+    "ReturnDate": "2025-04-28T04:19:30.0796158+07:00"
+  },
+  {
+    "RecordId": 3,
+    "UserId": 2,
+    "BookId": 1,
+    "BorrowDate": "2025-04-28T04:23:58.2804012+07:00",
+    "ReturnDate": "2025-04-28T04:24:03.9679995+07:00"
+  },
+  {
+    "RecordId": 4,
+    "UserId": 2,
+    "BookId": 2,
+    "BorrowDate": "2025-04-28T04:24:01.8150399+07:00",
+    "ReturnDate": null
+  }
+]

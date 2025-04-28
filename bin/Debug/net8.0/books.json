@@ -1,0 +1,14 @@
+[
+  {
+    "BookId": 1,
+    "Title": "signals and systems",
+    "Author": "alan v. openheimm",
+    "IsBorrowed": false
+  },
+  {
+    "BookId": 2,
+    "Title": "power electronics",
+    "Author": "david penaults",
+    "IsBorrowed": true
+  }
+]

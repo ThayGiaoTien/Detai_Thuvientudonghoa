@@ -1,0 +1,14 @@
+C:\Users\thela\source\repos\CSharp_Programming\C_Sharp_Projects\LibraryManagement\bin\Debug\net8.0\LibrarySystem.exe
+C:\Users\thela\source\repos\CSharp_Programming\C_Sharp_Projects\LibraryManagement\bin\Debug\net8.0\LibrarySystem.deps.json
+C:\Users\thela\source\repos\CSharp_Programming\C_Sharp_Projects\LibraryManagement\bin\Debug\net8.0\LibrarySystem.runtimeconfig.json
+C:\Users\thela\source\repos\CSharp_Programming\C_Sharp_Projects\LibraryManagement\bin\Debug\net8.0\LibrarySystem.dll
+C:\Users\thela\source\repos\CSharp_Programming\C_Sharp_Projects\LibraryManagement\bin\Debug\net8.0\LibrarySystem.pdb
+C:\Users\thela\source\repos\CSharp_Programming\C_Sharp_Projects\LibraryManagement\obj\Debug\net8.0\LibrarySystem.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\thela\source\repos\CSharp_Programming\C_Sharp_Projects\LibraryManagement\obj\Debug\net8.0\LibrarySystem.AssemblyInfoInputs.cache
+C:\Users\thela\source\repos\CSharp_Programming\C_Sharp_Projects\LibraryManagement\obj\Debug\net8.0\LibrarySystem.AssemblyInfo.cs
+C:\Users\thela\source\repos\CSharp_Programming\C_Sharp_Projects\LibraryManagement\obj\Debug\net8.0\LibrarySystem.csproj.CoreCompileInputs.cache
+C:\Users\thela\source\repos\CSharp_Programming\C_Sharp_Projects\LibraryManagement\obj\Debug\net8.0\LibrarySystem.dll
+C:\Users\thela\source\repos\CSharp_Programming\C_Sharp_Projects\LibraryManagement\obj\Debug\net8.0\refint\LibrarySystem.dll
+C:\Users\thela\source\repos\CSharp_Programming\C_Sharp_Projects\LibraryManagement\obj\Debug\net8.0\LibrarySystem.pdb
+C:\Users\thela\source\repos\CSharp_Programming\C_Sharp_Projects\LibraryManagement\obj\Debug\net8.0\LibrarySystem.genruntimeconfig.cache
+C:\Users\thela\source\repos\CSharp_Programming\C_Sharp_Projects\LibraryManagement\obj\Debug\net8.0\ref\LibrarySystem.dll
